@@ -44,7 +44,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -54,29 +54,41 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">Interface</div>
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseNav" aria-expanded="true"
+                <a class="nav-link" href="tables.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Data Jurusan</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="tablespgw.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Data Pegawai</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Data</span>
+                    <span>Data Kelas</span>
                 </a>
-                <div id="collapseNav" class="collapse show" aria-labelledby="headingTwo"
+                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">tables:</h6>
-                        <a class="collapse-item" href="tablespgw.php">
-                            <i class="fas fa-fw fa-table"></i>
-                            <span>data pegawai</span>
-                        </a>
+                        <h6 class="collapse-header">tahun angkatan:</h6>
+                        <?php
+                            $agt = 0;
+                            $q = mysqli_query($koneksi,"SELECT tahun_ajaran.tahun_angkatan FROM tahun_ajaran");
+                            while ($angkatan = mysqli_fetch_object($q)) {
+                            $agt++;
+                            ?>
                         <a class="collapse-item" href="tablesSiswa.php">
-                            <i class="fas fa-fw fa-table"></i>
-                            <span>data siswa</span>
+                            <i class="fas fa-fw fa-folder"></i>
+                            <span><?= $angkatan->tahun_angkatan?></span>
                         </a>
-                        <a class="collapse-item active" href="tables.php">
-                            <i class="fas fa-fw fa-table"></i>
-                            <span>data jurusan</span>
-                        </a>
+                        <?php
+							}
+						?>
                     </div>
                 </div>
             </li>
@@ -88,8 +100,6 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
-
         </ul>
         <!-- End of Sidebar -->
 
@@ -477,7 +487,7 @@
                                                 <td><?= $data->bidang_keahlian ?></td>
                                                 <td><?= $data->program_keahlian ?></td>
                                                 <td><?= $data->konsentrasi_keahlian ?></td>
-                                                <td><?= $data->tahun_program ?></td>
+                                                <td><?= $data->tahun_program ?> Tahun</td>
                                                 <td>
                                                     <!-- Example single danger button -->
                                                     <div class="btn-group">
