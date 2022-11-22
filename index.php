@@ -75,11 +75,11 @@ include './php/koneksi.php';
                         <h6 class="collapse-header">tahun angkatan:</h6>
                         <?php
                             $agt = 0;
-                            $q = mysqli_query($koneksi,"SELECT tahun_ajaran.tahun_angkatan FROM tahun_ajaran");
+                            $q = mysqli_query($koneksi,"SELECT * FROM tahun_ajaran");
                             while ($angkatan = mysqli_fetch_object($q)) {
                             $agt++;
                             ?>
-                        <a class="collapse-item" href="tablesSiswa.php">
+                        <a class="collapse-item" href="tablesSiswa.php?id_ta=<?=$angkatan->id_ta?>">
                             <i class="fas fa-fw fa-folder"></i>
                             <span><?= $angkatan->tahun_angkatan?></span>
                         </a>

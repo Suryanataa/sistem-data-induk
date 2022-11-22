@@ -78,11 +78,11 @@
                         <h6 class="collapse-header">tahun angkatan:</h6>
                         <?php
                             $agt = 0;
-                            $q = mysqli_query($koneksi,"SELECT tahun_ajaran.tahun_angkatan FROM tahun_ajaran");
+                            $q = mysqli_query($koneksi,"SELECT * FROM tahun_ajaran");
                             while ($angkatan = mysqli_fetch_object($q)) {
                             $agt++;
                             ?>
-                        <a class="collapse-item" href="tablesSiswa.php">
+                        <a class="collapse-item" href="tablesSiswa.php?id_ta=<?=$angkatan->id_ta?>">
                             <i class="fas fa-fw fa-folder"></i>
                             <span><?= $angkatan->tahun_angkatan?></span>
                         </a>
@@ -225,6 +225,30 @@
                                                                                             name="nama"
                                                                                             value="<?=$pegawai->nama?>" />
                                                                                     </div>
+                                                                                    <div class=" mb-3">
+                                                                                        <label for="agama"
+                                                                                            class="form-label">Status
+                                                                                            Pegawai:</label>
+                                                                                        <select class="form-select"
+                                                                                            aria-label="Default select example"
+                                                                                            name="status_pegawai"
+                                                                                            id="agama">
+                                                                                            <option selected>Status
+                                                                                                Pegawai</option>
+                                                                                            <option value="ASN"
+                                                                                                <?= $pegawai->status_pegawai == 'ASN'?'selected':''?>>
+                                                                                                ASN
+                                                                                            </option>
+                                                                                            <option value="ASN PPPK"
+                                                                                                <?= $pegawai->status_pegawai == 'ASN PPPK'?'selected':''?>>
+                                                                                                ASN PPPK
+                                                                                            </option>
+                                                                                            <option value="Honorer"
+                                                                                                <?= $pegawai->status_pegawai == 'Honorer'?'selected':''?>>
+                                                                                                Honorer
+                                                                                            </option>
+                                                                                        </select>
+                                                                                    </div>
                                                                                     <div class="mb-3">
                                                                                         <label for="jabatan"
                                                                                             class="form-label">Jabatan:</label>
@@ -329,6 +353,24 @@
                                     <label for="nama" class="form-label">Nama:</label>
                                     <input type="text" class="form-control mb-4" id="nama"
                                         placeholder="Masuk kan Nama pegawai" name="nama" />
+                                </div>
+                                <div class=" mb-3">
+                                    <label for="agama" class="form-label">Status
+                                        Pegawai:</label>
+                                    <select class="form-select" aria-label="Default select example"
+                                        name="status_pegawai" id="agama">
+                                        <option selected>Status
+                                            Pegawai</option>
+                                        <option value="ASN">
+                                            ASN
+                                        </option>
+                                        <option value="ASN PPPK">
+                                            ASN PPPK
+                                        </option>
+                                        <option value="Honorer">
+                                            Honorer
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="jabatan" class="form-label">Jabatan:</label>
