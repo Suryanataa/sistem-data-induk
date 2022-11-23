@@ -2,7 +2,7 @@
     include './php/koneksi.php';
     $id_ta = $_GET['id_ta'];
     
-    $q = mysqli_query($koneksi,"SELECT * FROM tahun_ajaran WHERE id_ta = $id_ta");
+    $q = mysqli_query($koneksi,"SELECT * FROM tahun_ajaran WHERE id_ta = '$id_ta'");
     $angkatan = mysqli_fetch_object($q);
 ?>
 <!DOCTYPE html>
@@ -145,8 +145,10 @@
                                     <h5 class="card-title fw-bold"><?=$kelas->kelas?></h5>
                                     <p class="card-text me-auto mt-2">Wali Kelas: <?=$kelas->nama?></p>
                                     <div class="d-flex mt-4">
-                                        <a href="tablesPeserta.php" class="btn btn-primary  me-auto">Lihat Peserta
-                                            didik</a>
+                                        <a href="tablesPeserta.php?id_kelas=<?=$kelas->id_kelas?>"
+                                            class="btn btn-primary me-auto">
+                                            Lihat Peserta didik
+                                        </a>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-secondary dropdown-toggle"
                                                 data-bs-toggle="dropdown" aria-expanded="false">Action</button>
@@ -175,7 +177,8 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="./php/editkls.php?id_ta=<?=$angkatan->id_ta?>"
+                                                    <form
+                                                        action="./php/editkls.php?id_ta=<?=$angkatan->id_ta?>&id_kelas=<?=$kelas->id_kelas?>"
                                                         method="post">
                                                         <div class="modal-body">
                                                             <div class="mb-3">
@@ -297,7 +300,7 @@
                                     <div class="mb-3">
                                         <label for="nama" class="form-label">Nama Kelas:</label>
                                         <input type="text" class="form-control mb-4" id="kelas"
-                                            placeholder="Masuk kan Nama Program keahlian" name="kelas" />
+                                            placeholder="Masuk kan Nama Kelas" name="kelas" />
                                     </div>
                                     <div class=" mb-3">
                                         <label for="agama" class="form-label">Wali Kelas:</label>

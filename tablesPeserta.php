@@ -1,6 +1,9 @@
 <?php
     include './php/koneksi.php';
-  
+    $id_kelas = $_GET['id_kelas'];
+    
+    $q = mysqli_query($koneksi,"SELECT * FROM kelas WHERE id_kelas = '$id_kelas'");
+    $kelas = mysqli_fetch_object($q);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +59,7 @@
             <div class="sidebar-heading">Interface</div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item active">
+            <li class="nav-item ">
                 <a class="nav-link" href="tables.php">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Data Jurusan</span></a>
@@ -66,7 +69,7 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Data Pegawai</span></a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseSide" aria-expanded="true"
                     aria-controls="collapseSide">
                     <i class="fas fa-fw fa-cog"></i>
@@ -112,7 +115,7 @@
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Data Siswa</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Data Siswa Kelas <?=$kelas->kelas?></h1>
                     </div>
                     <!-- end of Page Heading -->
                     <div class="row mb-5 mt-5">
@@ -142,7 +145,7 @@
                                         <tbody>
                                             <?php
                                             $no = 0;
-                                            $query = mysqli_query($koneksi,"SELECT * FROM peserta_didik");
+                                            $query = mysqli_query($koneksi,"SELECT * FROM peserta_didik WHERE id_kelas = '$id_kelas'");
                                             while ($siswa = mysqli_fetch_object($query)) {
                                                 $no++;
                                             ?>
@@ -154,7 +157,7 @@
                                                 <td><?= $siswa->jk ?></td>
                                                 <td><?= $siswa->tempat_lahir ?></td>
                                                 <td><?= $siswa->tanggal_lahir ?></td>
-                                                <td><?= $siswa->id_kelas ?></td>
+                                                <td><?= $kelas->kelas ?></td>
                                                 <td>
                                                     <!-- Example single danger button -->
                                                     <div class="btn-group">
@@ -163,12 +166,13 @@
                                                             aria-expanded="false">Action</button>
                                                         <ul class="dropdown-menu">
                                                             <a href="#" data-bs-toggle="modal"
-                                                                data-bs-target="#editKonsentrasi<?=$data->id_kk?>">
+                                                                data-bs-target="#kon<?=$kelas->id_kelas?>">
                                                                 <li class="dropdown-item">
                                                                     edit
                                                                 </li>
                                                             </a>
-                                                            <a href="./php/hapus.php?id_kk=<?=$data->id_kk?>">
+                                                            <a
+                                                                href="./php/hapuspsr.php?nisn=<?=$siswa->nisn?>&id_kelas=<?=$kelas->id_kelas?>">
                                                                 <li class="dropdown-item">
                                                                     Hapus
                                                                 </li>
@@ -177,69 +181,104 @@
                                                         </ul>
                                                     </div>
                                                     <!-- modal Konsentrasi keahlian -->
-                                                    <div class="modal fade" id="editKonsentrasi<?=$data->id_kk?>"
-                                                        tabindex="-1" aria-labelledby="exampleModalLabel"
-                                                        aria-hidden="true">
+                                                    <div class="modal fade" id="kon<?=$kelas->id_kelas?>" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        edit konsentrasi keahlian</h1>
+                                                                        Tambah Peserta Didik</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
                                                                 </div>
-                                                                <form action="./php/tambahkk.php" method="post">
+                                                                <form
+                                                                    action="./php/editpsr.php?id_kelas=<?=$kelas->id_kelas?>&nisn=<?=$siswa->nisn?>"
+                                                                    method="post">
                                                                     <div class="modal-body">
                                                                         <div class="mb-3">
-                                                                            <label for="nama" class="form-label">ID
-                                                                                Konsentrasi Keahlian:</label>
+                                                                            <label for="nama"
+                                                                                class="form-label">NISN:</label>
                                                                             <input type="text" class="form-control mb-4"
-                                                                                id="nama" placeholder="Masuk id"
-                                                                                name="id_kk"
-                                                                                value="<?=$data->id_kk?>" />
+                                                                                id="nama" placeholder="Masuk NISN"
+                                                                                name="nisn" maxlength="10"
+                                                                                value="<?=$siswa->nisn?>" />
                                                                         </div>
-                                                                        <div class=" mb-3">
-                                                                            <label for="agama"
-                                                                                class="form-label">Program
-                                                                                Keahlian:</label>
-                                                                            <select class="form-select"
-                                                                                aria-label="Default select example"
-                                                                                name="id_pk" id="agama">
-                                                                                <option selected>Program keahlian
-                                                                                </option>
-                                                                                <?php
-                                            $o = 0;
-                                            $querykk = mysqli_query($koneksi,"SELECT * FROM program_keahlian");
-                                            while ($datakk = mysqli_fetch_object($querykk)) {
-                                                $o++;
-                                                ?>
-                                                                                <option value="<?=$datakk->id_pk?>">
-                                                                                    <?= $datakk->program_keahlian ?>
-                                                                                </option>
-                                                                                <?php
-										}
-										?>
-                                                                            </select>
+                                                                        <div class="mb-3">
+                                                                            <label for="nama"
+                                                                                class="form-label">NIK:</label>
+                                                                            <input type="text" class="form-control mb-4"
+                                                                                id="nama" placeholder="Masuk NIK"
+                                                                                name="nik" maxlength="16"
+                                                                                value="<?=$siswa->nik?>" />
                                                                         </div>
                                                                         <div class="mb-3">
                                                                             <label for="nama" class="form-label">Nama
-                                                                                Konsentrasi Keahlian:</label>
+                                                                                Lengkap:</label>
                                                                             <input type="text" class="form-control mb-4"
                                                                                 id="nama"
-                                                                                placeholder="Masuk kan Nama konsentrasi keahlian"
-                                                                                name="konsentrasi_keahlian"
-                                                                                value="<?=$data->id_kk?>" />
+                                                                                placeholder="Masuk nama lengkap"
+                                                                                name="nama" value="<?=$siswa->nama?>" />
                                                                         </div>
                                                                         <div class=" mb-3">
-                                                                            <label for="agama" class="form-label">Tahun
-                                                                                Program:</label>
+                                                                            <div class="mb-3">
+                                                                                <label for="jk" class="form-label">Jenis
+                                                                                    Kelamin:</label>
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input"
+                                                                                        type="radio" name="jk" id="jk1"
+                                                                                        value="Laki-Laki"
+                                                                                        <?= $siswa->jk == 'Laki-Laki'?'checked':''?>>
+                                                                                    <label class="form-check-label"
+                                                                                        for="jk1">
+                                                                                        Laki-laki
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="form-check">
+                                                                                    <input class="form-check-input"
+                                                                                        type="radio" name="jk" id="jk2"
+                                                                                        value="Perempuan"
+                                                                                        <?= $siswa->jk == 'Perempuan'?'checked':''?>>
+                                                                                    <label class="form-check-label"
+                                                                                        for="jk2">
+                                                                                        Perempuan
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="nama" class="form-label">Tempat
+                                                                                Tinggal:</label>
+                                                                            <textarea class="form-control" id="pesan"
+                                                                                name="tempat_lahir"
+                                                                                rows="3"><?=$siswa->tempat_lahir?></textarea>
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="nama" class="form-label">Tanggal
+                                                                                Tinggal:</label>
+                                                                            <input type="date" class="form-control"
+                                                                                id="pesan" name="tanggal_lahir" rows="3"
+                                                                                value="<?=$siswa->tanggal_lahir?>" />
+                                                                        </div>
+                                                                        <div class=" mb-3">
+                                                                            <label for="agama"
+                                                                                class="form-label">Kelas:</label>
                                                                             <select class="form-select"
                                                                                 aria-label="Default select example"
-                                                                                name="tahun_program" id="agama">
-                                                                                <option selected>Tahun Program</option>
-                                                                                <option value="3">3 tahun</option>
-                                                                                <option value="4">4 tahun</option>
+                                                                                name="id_kelas" id="agama">
+                                                                                <option selected>Kelas</option>
+                                                                                <?php
+                                            $no = 0;
+                                            $query = mysqli_query($koneksi,"SELECT * FROM kelas");
+                                            while ($data = mysqli_fetch_object($query)) {
+                                                $no++;
+                                            ?>
+                                                                                <option value="<?=$data->id_kelas?>"
+                                                                                    <?= $siswa->id_kelas == $data->id_kelas?'selected':''?>>
+                                                                                    <?= $data->kelas ?></option>
+                                                                                <?php
+										}
+										?>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -269,52 +308,6 @@
             </div>
             <!-- End of Main Content -->
 
-            <!-- modal Program keahlian -->
-            <div class="modal fade" id="program" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah program keahlian</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form action="./php/tambahpk.php" method="post">
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama" class="form-label">ID Program keahlian:</label>
-                                    <input type="text" class="form-control mb-4" id="nama" placeholder="Masuk id"
-                                        name="id_pk" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama" class="form-label">nama Program keahlian:</label>
-                                    <input type="text" class="form-control mb-4" id="nama"
-                                        placeholder="Masuk kan Nama Program keahlian" name="program_keahlian" />
-                                </div>
-                                <div class=" mb-3">
-                                    <label for="agama" class="form-label">bidang keahlian:</label>
-                                    <select class="form-select" aria-label="Default select example" name="id_bk"
-                                        id="agama">
-                                        <option selected>bidang keahlian</option>
-                                        <?php
-                                            $no = 0;
-                                            $query = mysqli_query($koneksi,"SELECT * FROM bidang_keahlian");
-                                            while ($data = mysqli_fetch_object($query)) {
-                                                $no++;
-                                            ?>
-                                        <option value="<?=$data->id_bk?>"><?= $data->bidang_keahlian ?></option>
-                                        <?php
-										}
-										?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
 
             <!-- modal Konsentrasi keahlian -->
             <div class="modal fade" id="konsentrasi" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -322,45 +315,68 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah konsentrasi keahlian</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Peserta Didik</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form action="./php/tambahkk.php" method="post">
+                        <form action="./php/tambahpsr.php?id_kelas=<?=$kelas->id_kelas?>" method="post">
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="nama" class="form-label">ID Konsentrasi Keahlian:</label>
-                                    <input type="text" class="form-control mb-4" id="nama" placeholder="Masuk id"
-                                        name="id_kk" />
+                                    <label for="nama" class="form-label">NISN:</label>
+                                    <input type="text" class="form-control mb-4" id="nama" placeholder="Masuk NISN"
+                                        name="nisn" maxlength="10" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label">NIK:</label>
+                                    <input type="text" class="form-control mb-4" id="nama" placeholder="Masuk NIK"
+                                        name="nik" maxlength="16" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label">Nama Lengkap:</label>
+                                    <input type="text" class="form-control mb-4" id="nama"
+                                        placeholder="Masuk nama lengkap" name="nama" />
                                 </div>
                                 <div class=" mb-3">
-                                    <label for="agama" class="form-label">Program Keahlian:</label>
-                                    <select class="form-select" aria-label="Default select example" name="id_pk"
+                                    <div class="mb-3">
+                                        <label for="jk" class="form-label">Jenis Kelamin:</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="jk" id="jk1"
+                                                value="Laki-Laki">
+                                            <label class="form-check-label" for="jk1">
+                                                Laki-laki
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="jk" id="jk2"
+                                                value="Perempuan">
+                                            <label class="form-check-label" for="jk2">
+                                                Perempuan
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label">Tempat Tinggal:</label>
+                                    <textarea class="form-control" id="pesan" name="tempat_lahir" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label">Tanggal Tinggal:</label>
+                                    <input type="date" class="form-control" id="pesan" name="tanggal_lahir" rows="3" />
+                                </div>
+                                <div class=" mb-3">
+                                    <label for="agama" class="form-label">Kelas:</label>
+                                    <select class="form-select" aria-label="Default select example" name="id_kelas"
                                         id="agama">
-                                        <option selected>Program keahlian</option>
+                                        <option selected>Kelas</option>
                                         <?php
                                             $no = 0;
-                                            $query = mysqli_query($koneksi,"SELECT * FROM program_keahlian");
+                                            $query = mysqli_query($koneksi,"SELECT * FROM kelas");
                                             while ($data = mysqli_fetch_object($query)) {
                                                 $no++;
-                                                ?>
-                                        <option value="<?=$data->id_pk?>"><?= $data->program_keahlian ?></option>
+                                            ?>
+                                        <option value="<?=$data->id_kelas?>"><?= $data->kelas ?></option>
                                         <?php
 										}
 										?>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama" class="form-label">Nama Konsentrasi Keahlian:</label>
-                                    <input type="text" class="form-control mb-4" id="nama"
-                                        placeholder="Masuk kan Nama konsentrasi keahlian" name="konsentrasi_keahlian" />
-                                </div>
-                                <div class=" mb-3">
-                                    <label for="agama" class="form-label">Tahun Program:</label>
-                                    <select class="form-select" aria-label="Default select example" name="tahun_program"
-                                        id="agama">
-                                        <option selected>Tahun Program</option>
-                                        <option value="3">3 tahun</option>
-                                        <option value="4">4 tahun</option>
                                     </select>
                                 </div>
                             </div>

@@ -200,7 +200,8 @@
                                                                                     data-bs-dismiss="modal"
                                                                                     aria-label="Close"></button>
                                                                             </div>
-                                                                            <form action="./php/editpgw.php"
+                                                                            <form
+                                                                                action="./php/editpgw.php?nip=<?=$pegawai->nip?>"
                                                                                 method="post">
                                                                                 <div class="modal-body">
                                                                                     <div class="mb-3">
@@ -383,8 +384,9 @@
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="jabatan" id="jabatan2"
-                                            value="Tenaga Kependidikan" <label class="form-check-label" for="jabatan2">
-                                        Tenaga Kependidikan
+                                            value="Tenaga Kependidikan">
+                                        <label class="form-check-label" for="jabatan2">
+                                            Tenaga Kependidikan
                                         </label>
                                     </div>
                                 </div>

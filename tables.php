@@ -245,7 +245,9 @@
                                                                                     data-bs-dismiss="modal"
                                                                                     aria-label="Close"></button>
                                                                             </div>
-                                                                            <form action="./php/edit.php" method="post">
+                                                                            <form
+                                                                                action="./php/edit.php?id_bk=<?=$data->id_bk?>"
+                                                                                method="post">
                                                                                 <div class="modal-body">
                                                                                     <div class="mb-3">
                                                                                         <label for="nama"
@@ -373,7 +375,8 @@
                                                                                     data-bs-dismiss="modal"
                                                                                     aria-label="Close"></button>
                                                                             </div>
-                                                                            <form action="./php/editpk.php"
+                                                                            <form
+                                                                                action="./php/editpk.php?id_pk=<?=$data->id_pk?>"
                                                                                 method="post">
                                                                                 <div class="modal-body">
                                                                                     <div class="mb-3">
@@ -522,7 +525,8 @@
                                                                         data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
                                                                 </div>
-                                                                <form action="./php/editkk.php" method="post">
+                                                                <form action="./php/editkk.php?id_kk=<?=$data->id_kk?>"
+                                                                    method="post">
                                                                     <div class="modal-body">
                                                                         <div class="mb-3">
                                                                             <label for="nama" class="form-label">ID
